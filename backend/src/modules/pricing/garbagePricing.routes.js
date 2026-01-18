@@ -3,21 +3,14 @@ const router = express.Router();
 
 const auth = require("../../middlewares/auth.middleware");
 const role = require("../../middlewares/role.middleware");
-const GarbageController = require("./garbage.controller");
+const GarbagePricingController = require("./garbagePricing.controller");
 
 /**
  * @swagger
- * tags:
- *   name: GarbageTypes
- *   description: Garbage type management
- */
-
-/**
- * @swagger
- * /garbage-types:
+ * /garbage-prices:
  *   post:
- *     summary: Create garbage type
- *     tags: [GarbageTypes]
+ *     summary: Create garbage price
+ *     tags: [GarbagePrices]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -26,28 +19,48 @@ const GarbageController = require("./garbage.controller");
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name]
+ *             required: [garbage_type_id, unit, price_per_unit]
  *             properties:
- *               name:
+ *               garbage_type_id:
+ *                 type: integer
+ *                 example: 1
+ *               unit:
  *                 type: string
- *                 example: Plastic
+ *                 enum: [KG, PIECE]
+ *               price_per_unit:
+ *                 type: number
+ *                 example: 12.5
  *     responses:
  *       201:
- *         description: Created successfully
+ *         description: Garbage price created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Garbage price created
+ *                 id:
+ *                   type: integer
+ *                   example: 10
  */
-router.post("/", auth, role("ADMIN"), GarbageController.create);
+router.post("/", auth, role("ADMIN"), GarbagePricingController.create);
 
 /**
  * @swagger
- * /garbage-types:
+ * /garbage-prices:
  *   get:
- *     summary: Get all garbage types
- *     tags: [GarbageTypes]
+ *     summary: Get all garbage prices
+ *     tags: [GarbagePrices]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of garbage types
+ *         description: List of garbage prices
  *         content:
  *           application/json:
  *             schema:
@@ -64,21 +77,27 @@ router.post("/", auth, role("ADMIN"), GarbageController.create);
  *                       id:
  *                         type: integer
  *                         example: 1
- *                       name:
+ *                       garbage_type_id:
+ *                         type: integer
+ *                         example: 2
+ *                       garbage_type_name:
  *                         type: string
  *                         example: Plastic
- *                       added_on:
+ *                       unit:
  *                         type: string
- *                         format: date-time
+ *                         example: KG
+ *                       price_per_unit:
+ *                         type: number
+ *                         example: 15
  */
-router.get("/", auth, role("ADMIN"), GarbageController.getAll);
+router.get("/", auth, role("ADMIN"), GarbagePricingController.getAll);
 
 /**
  * @swagger
- * /garbage-types/{id}:
+ * /garbage-prices/{id}:
  *   get:
- *     summary: Get garbage type by ID
- *     tags: [GarbageTypes]
+ *     summary: Get garbage price by ID
+ *     tags: [GarbagePrices]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -89,7 +108,7 @@ router.get("/", auth, role("ADMIN"), GarbageController.getAll);
  *           type: integer
  *     responses:
  *       200:
- *         description: Garbage type details
+ *         description: Garbage price details
  *         content:
  *           application/json:
  *             schema:
@@ -104,23 +123,26 @@ router.get("/", auth, role("ADMIN"), GarbageController.getAll);
  *                     id:
  *                       type: integer
  *                       example: 1
- *                     name:
+ *                     garbage_type_id:
+ *                       type: integer
+ *                       example: 2
+ *                     unit:
  *                       type: string
- *                       example: Plastic
- *                     added_on:
- *                       type: string
- *                       format: date-time
+ *                       example: KG
+ *                     price_per_unit:
+ *                       type: number
+ *                       example: 15
  *       404:
  *         description: Not found
  */
-router.get("/:id", auth, role("ADMIN"), GarbageController.getById);
+router.get("/:id", auth, role("ADMIN"), GarbagePricingController.getById);
 
 /**
  * @swagger
- * /garbage-types/{id}:
+ * /garbage-prices/{id}:
  *   put:
- *     summary: Update garbage type
- *     tags: [GarbageTypes]
+ *     summary: Update garbage price
+ *     tags: [GarbagePrices]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -135,10 +157,13 @@ router.get("/:id", auth, role("ADMIN"), GarbageController.getById);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name]
+ *             required: [unit, price_per_unit]
  *             properties:
- *               name:
+ *               unit:
  *                 type: string
+ *                 enum: [KG, PIECE]
+ *               price_per_unit:
+ *                 type: number
  *     responses:
  *       200:
  *         description: Updated successfully
@@ -152,16 +177,16 @@ router.get("/:id", auth, role("ADMIN"), GarbageController.getById);
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: Garbage type updated
+ *                   example: Garbage price updated
  */
-router.put("/:id", auth, role("ADMIN"), GarbageController.update);
+router.put("/:id", auth, role("ADMIN"), GarbagePricingController.update);
 
 /**
  * @swagger
- * /garbage-types/{id}:
+ * /garbage-prices/{id}:
  *   delete:
- *     summary: Soft delete garbage type
- *     tags: [GarbageTypes]
+ *     summary: Deactivate garbage price
+ *     tags: [GarbagePrices]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -172,7 +197,7 @@ router.put("/:id", auth, role("ADMIN"), GarbageController.update);
  *           type: integer
  *     responses:
  *       200:
- *         description: Deleted successfully
+ *         description: Deactivated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -183,8 +208,8 @@ router.put("/:id", auth, role("ADMIN"), GarbageController.update);
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: Garbage type deleted
+ *                   example: Garbage price deactivated
  */
-router.delete("/:id", auth, role("ADMIN"), GarbageController.softDelete);
+router.delete("/:id", auth, role("ADMIN"), GarbagePricingController.deactivate);
 
 module.exports = router;
