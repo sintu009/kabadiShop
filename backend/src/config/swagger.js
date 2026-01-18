@@ -1,21 +1,18 @@
 const swaggerJSDoc = require("swagger-jsdoc");
+const path = require("path");
 
 const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Node MySQL API",
+      title: "Kabadi Shop API",
       version: "1.0.0",
-      description: "Production ready Node.js + MySQL API",
+      description: "Scrap Management Backend APIs",
     },
     servers: [
       {
         url: "http://localhost:5000/api",
-        description: "Local server",
-      },
-      {
-        url: "http://localhost:5000/api",
-        description: "Production server",
+        description: "Local API",
       },
     ],
     components: {
@@ -27,13 +24,13 @@ const options = {
         },
       },
     },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
+    security: [{ bearerAuth: [] }],
   },
-  apis: ["./src/routes/*.js", "./src/modules/**/*.js"],
+
+  // 🔥 THIS PATH IS THE KEY
+  apis: [path.join(__dirname, "../modules/**/*.routes.js")],
 };
+
+console.log(swaggerJSDoc(options).paths);
 
 module.exports = swaggerJSDoc(options);

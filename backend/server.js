@@ -13,6 +13,23 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./src/config/swagger.js");
+
+/** ===========================
+ *  SWAGGER SETUP
+ */
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  }),
+);
+
 /* ==============================
    HEALTH CHECK
 ================================ */
@@ -26,9 +43,7 @@ app.get("/health", (req, res) => {
 /* ==============================
    ROUTES
 ================================ */
-
-app.use("/api/auth", require("./src/modules/auth/auth.routes"));
-app.use("/api/admin", require("./src/modules/admins/admin.routes"));
+app.use("/api", require("./src/routes"));
 
 /* ==============================
    404 HANDLER
