@@ -44,6 +44,24 @@ class ScrapCollectorService {
   static async softDelete(id, deletedBy) {
     await SqlHelper.execute("sp_scrap_collector_soft_delete", [id, deletedBy]);
   }
+
+  static async getDropdown() {
+    return SqlHelper.getAll("sp_scrap_collector_dropdown", []);
+  }
+
+  static async getAssigned(scrapCollectorId) {
+    return SqlHelper.getAll("sp_collector_assigned_pickups", [
+      scrapCollectorId,
+    ]);
+  }
+
+  static async updateStatus(scrapCollectorId, pickupRequestId, status) {
+    await SqlHelper.execute("sp_collector_update_pickup_status", [
+      pickupRequestId,
+      status,
+      scrapCollectorId,
+    ]);
+  }
 }
 
 module.exports = ScrapCollectorService;

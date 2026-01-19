@@ -6,6 +6,8 @@ const adminRoutes = require("../modules/admins/admin.routes");
 const scrapCollectorRoutes = require("../modules/scrapCollectors/scrapCollector.routes");
 const garbageRoutes = require("../modules/garbage/garbage.routes.js");
 const garbagePriceRoutes = require("../modules/pricing/garbagePricing.routes");
+const pickupRoutes = require("../modules/pickup/pickup.routes");
+const pickupAssignmentRoutes = require("../modules/pickupAssignment/pickupAssignment.routes");
 
 const router = express.Router();
 
@@ -18,5 +20,7 @@ router.use("/users", userRoutes);
 router.use("/scrap-collectors", scrapCollectorRoutes);
 router.use("/garbage-types", garbageRoutes);
 router.use("/garbage-prices", garbagePriceRoutes);
+router.use("/pickup-requests", pickupRoutes);
+router.use("/pickup-assignments", pickupAssignmentRoutes);
 
 module.exports = router;

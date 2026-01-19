@@ -109,7 +109,7 @@ class SqlHelper {
       if (outParams.length === 0) return null;
 
       const [rows] = await conn.query(
-        `SELECT ${outParams.map((p) => `@${p} AS ${p}`).join(",")};`
+        `SELECT ${outParams.map((p) => `@${p} AS ${p}`).join(",")};`,
       );
 
       return rows[0];

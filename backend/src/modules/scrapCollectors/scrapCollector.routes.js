@@ -167,4 +167,132 @@ router.put("/:id", auth, role("ADMIN"), ScrapCollectors.update);
  */
 router.delete("/:id", auth, role("ADMIN"), ScrapCollectors.softDelete);
 
+/**
+ * @swagger
+ * /scrap-collectors/dropdown:
+ *   get:
+ *     summary: Get scrap collectors dropdown list
+ *     description: Returns minimal data for assignment dropdown
+ *     tags: [ScrapCollectors]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dropdown list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       name:
+ *                         type: string
+ *                         example: Ramesh
+ *                       phone_number:
+ *                         type: string
+ *                         example: "9876543210"
+ */
+router.get("/dropdown", auth, role("ADMIN"), ScrapCollectors.dropdown);
+
+/**
+ * @swagger
+ * /collector/pickups:
+ *   get:
+ *     summary: Get assigned pickup requests
+ *     tags: [ScrapCollectors]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Assigned pickups
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       pickup_request_id:
+ *                         type: integer
+ *                       user_name:
+ *                         type: string
+ *                       phone_number:
+ *                         type: string
+ *                       garbage_type:
+ *                         type: string
+ *                       estimated_weight:
+ *                         type: number
+ *                       unit:
+ *                         type: string
+ *                       total_amount:
+ *                         type: number
+ *                       status:
+ *                         type: string
+ */
+router.get("/pickups", auth, role("COLLECTOR"), ScrapCollectors.getAssigned);
+
+/**
+ * @swagger
+ * /collector/pickups/{pickupRequestId}/status:
+ *   put:
+ *     summary: Update pickup status
+ *     tags: [ScrapCollectors]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: pickupRequestId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [status]
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum:
+ *                   - ACCEPTED
+ *                   - INPROGRESS
+ *                   - COMPLETED
+ *                   - REJECTED
+ *     responses:
+ *       200:
+ *         description: Status updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ */
+router.put(
+  "/pickups/:pickupRequestId/status",
+  auth,
+  role("COLLECTOR"),
+  ScrapCollectors.updateStatus,
+);
+
 module.exports = router;
