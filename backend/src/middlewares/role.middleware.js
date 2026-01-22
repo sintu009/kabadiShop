@@ -6,7 +6,8 @@ module.exports = (...allowedRoles) => {
         message: "Access denied",
       });
     }
-
+    console.log("User role:", req.user.role);
+    console.log("Allowed roles:", allowedRoles);
     if (!allowedRoles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,

@@ -7,6 +7,13 @@ const GarbagePricingController = require("./garbagePricing.controller");
 
 /**
  * @swagger
+ * tags:
+ *   name: GarbagePrices
+ *   description: Garbage Pricing management
+ */
+
+/**
+ * @swagger
  * /garbage-prices:
  *   post:
  *     summary: Create garbage price
@@ -84,8 +91,8 @@ router.post("/", auth, role("ADMIN"), GarbagePricingController.create);
  *                         type: string
  *                         example: Plastic
  *                       unit:
- *                         type: string
- *                         example: KG
+ *                         type: integer
+ *                         example: 1
  *                       price_per_unit:
  *                         type: number
  *                         example: 15

@@ -47,35 +47,12 @@ class ScrapCollectorController {
   }
 
   static async dropdown(req, res) {
+    console.log("Here");
     const data = await ScrapCollectorService.getDropdown();
 
     res.json({
       success: true,
       data,
-    });
-  }
-
-  static async getAssigned(req, res) {
-    const data = await ScrapCollectorController.getAssigned(
-      req.user.scrap_collector_id,
-    );
-
-    res.json({
-      success: true,
-      data,
-    });
-  }
-
-  static async updateStatus(req, res) {
-    await ScrapCollectorController.updateStatus(
-      req.user.scrap_collector_id,
-      req.params.pickupRequestId,
-      req.body.status,
-    );
-
-    res.json({
-      success: true,
-      message: "Pickup status updated",
     });
   }
 }

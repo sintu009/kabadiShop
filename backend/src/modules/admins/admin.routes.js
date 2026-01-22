@@ -4,6 +4,13 @@ const AdminController = require("./admin.controller");
 
 /**
  * @swagger
+ * tags:
+ *   name: Admins
+ *   description: Admin management
+ */
+
+/**
+ * @swagger
  * /admins/create:
  *   post:
  *     summary: Create admin user
