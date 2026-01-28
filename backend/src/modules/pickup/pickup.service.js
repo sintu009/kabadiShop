@@ -5,8 +5,8 @@ class PickupService {
     const result = await SqlHelper.callSP("sp_pickup_request_create", [
       data.user_id,
       data.garbage_type_id,
+      data.garbage_price_id,
       data.estimated_weight || null,
-      data.unit,
       data.price_at_request,
       data.total_amount,
       data.address,
@@ -30,6 +30,7 @@ class PickupService {
   }
 
   static async updateStatus(scrapCollectorId, pickupRequestId, status) {
+    console.log("Updating status to:", scrapCollectorId);
     await SqlHelper.execute("sp_collector_update_pickup_status", [
       pickupRequestId,
       status,
@@ -59,8 +60,8 @@ class PickupService {
     const result = await SqlHelper.callSP("sp_pickup_request_create", [
       userId,
       data.garbage_type_id,
+      data.garbage_price_id,
       data.estimated_weight || null,
-      data.unit,
       data.price_at_request,
       data.total_amount,
       data.address,

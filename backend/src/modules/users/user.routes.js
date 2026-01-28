@@ -50,9 +50,9 @@ const UserController = require("../users/user.controller.js");
  *       401:
  *         description: Unauthorized
  *       403:
- *         description: Forbidden (Admin only)
+ *         description: Forbidden
  */
-router.post("/", auth, role("ADMIN"), UserController.create);
+router.post("/", UserController.create);
 
 /**
  * @swagger
@@ -82,9 +82,6 @@ router.post("/", auth, role("ADMIN"), UserController.create);
  *               email:
  *                 type: string
  *                 example: updated@mail.com
- *               phone:
- *                 type: string
- *                 example: "9999999999"
  *     responses:
  *       200:
  *         description: User updated successfully
@@ -118,7 +115,7 @@ router.get("/", auth, role("ADMIN"), UserController.getAll);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /users/{id}:
  *   get:
  *     summary: Get user by ID
  *     tags: [Users]

@@ -37,12 +37,12 @@ const PickupController = require("./pickup.controller");
  *               garbage_type_id:
  *                 type: integer
  *                 example: 2
+ *               garbage_price_id:
+ *                 type: integer
+ *                 example: 2
  *               estimated_weight:
  *                 type: number
  *                 example: 5
- *               unit:
- *                 type: string
- *                 enum: [KG, PIECE]
  *               price_at_request:
  *                 type: number
  *                 example: 15
@@ -76,7 +76,7 @@ const PickupController = require("./pickup.controller");
  *                 id:
  *                   type: integer
  */
-router.post("/", PickupController.create);
+router.post("/", auth, role("ADMIN", "USER"), PickupController.create);
 
 /**
  * @swagger
@@ -241,7 +241,7 @@ router.put(
  *               estimated_weight:
  *                 type: number
  *                 example: 5
- *               unit:
+ *               garbage_price_id:
  *                 type: integer
  *                 example: 1
  *               price_at_request:
@@ -275,6 +275,6 @@ router.put(
  *                 pickup_request_id:
  *                   type: integer
  */
-router.post("/guest", Controller.guestPickup);
+router.post("/guest", PickupController.guestPickup);
 
 module.exports = router;

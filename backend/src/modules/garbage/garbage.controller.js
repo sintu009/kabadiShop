@@ -2,13 +2,26 @@ const GarbageTypeService = require("./garbage.service");
 
 class GarbageController {
   static async create(req, res) {
-    const id = await GarbageTypeService.create(req.body, req.user.username);
+    const imageUrl = req.file ? `/garbage-types/${req.file.filename}` : null;
+    const id = await GarbageTypeService.create(
+      req.body,
+      req.user.username,
+      imageUrl,
+    );
 
-    res.status(201).json({
-      success: true,
-      message: "Garbage type created",
-      id,
-    });
+    if (id == -1) {
+      res.status(200).json({
+        success: false,
+        message: "Garbage type name already exists",
+        id,
+      });
+    } else {
+      res.status(201).json({
+        success: true,
+        message: "Garbage type created",
+        id,
+      });
+    }
   }
 
   static async getAll(req, res) {
@@ -30,12 +43,25 @@ class GarbageController {
   }
 
   static async update(req, res) {
-    await GarbageTypeService.update(req.params.id, req.body, req.user.username);
-
-    res.json({
-      success: true,
-      message: "Garbage type updated",
-    });
+    const imageUrl = req.file ? `/garbage-types/${req.file.filename}` : null;
+    const id = await GarbageTypeService.update(
+      req.params.id,
+      req.body,
+      req.user.username,
+      imageUrl,
+    );
+    if (id == -1) {
+      res.status(200).json({
+        success: false,
+        message: "Garbage type name already exists",
+        id,
+      });
+    } else {
+      res.json({
+        success: true,
+        message: "Garbage type updated",
+      });
+    }
   }
 
   static async softDelete(req, res) {

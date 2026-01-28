@@ -25,7 +25,6 @@ class UserService {
       id,
       data.name,
       data.email,
-      data.phone,
       modifiedBy,
     ]);
   }

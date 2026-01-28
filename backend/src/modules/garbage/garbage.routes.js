@@ -3,6 +3,8 @@ const router = express.Router();
 
 const auth = require("../../middlewares/auth.middleware");
 const role = require("../../middlewares/role.middleware");
+const upload = require("../../middlewares/upload.middleware");
+
 const GarbageController = require("./garbage.controller");
 
 /**
@@ -23,7 +25,7 @@ const GarbageController = require("./garbage.controller");
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required: [name]
@@ -31,11 +33,20 @@ const GarbageController = require("./garbage.controller");
  *               name:
  *                 type: string
  *                 example: Plastic
+ *               image:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Created successfully
  */
-router.post("/", auth, role("ADMIN"), GarbageController.create);
+router.post(
+  "/",
+  auth,
+  role("ADMIN"),
+  upload.single("image"),
+  GarbageController.create,
+);
 
 /**
  * @swagger
@@ -132,13 +143,16 @@ router.get("/:id", auth, role("ADMIN"), GarbageController.getById);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required: [name]
  *             properties:
  *               name:
  *                 type: string
+ *               image:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
  *         description: Updated successfully
@@ -154,7 +168,13 @@ router.get("/:id", auth, role("ADMIN"), GarbageController.getById);
  *                   type: string
  *                   example: Garbage type updated
  */
-router.put("/:id", auth, role("ADMIN"), GarbageController.update);
+router.put(
+  "/:id",
+  auth,
+  role("ADMIN"),
+  upload.single("image"),
+  GarbageController.update,
+);
 
 /**
  * @swagger

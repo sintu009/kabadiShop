@@ -24,7 +24,7 @@ class PickupController {
   }
 
   static async getAssigned(req, res) {
-    const data = await PickupService.getAssigned(req.user.scrap_collector_id);
+    const data = await PickupService.getAssigned(req.user.user_id);
 
     res.json({
       success: true,
@@ -35,8 +35,10 @@ class PickupController {
   static async updateStatus(req, res) {
     const { status, image } = req.body;
     const { pickupRequestId } = req.params;
-    const scrapCollectorId = req.user.scrap_collector_id;
+    const scrapCollectorId = req.user.user_id;
     const username = req.user.username;
+
+    console.log("Updating status to:", pickupRequestId, status);
     // COMPLETED = special business flow
     if (status === "COMPLETED") {
       await PickupService.completePickup(
@@ -87,6 +89,7 @@ class PickupController {
     const pickupId = await PickupService.createPickup(
       {
         garbage_type_id,
+        garbage_price_id,
         estimated_weight,
         unit,
         price_at_request,

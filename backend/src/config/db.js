@@ -9,6 +9,25 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: Number(process.env.DB_CONNECTION_LIMIT || 10),
   queueLimit: 0,
+  timezone: "+00:00", // DB always UTC
+
+  typeCast: function (field, next) {
+    // Handle DATETIME & TIMESTAMP
+    if (field.type === "DATETIME" || field.type === "TIMESTAMP") {
+      const value = field.string();
+      if (!value) return null;
+
+      // value is UTC string -> convert to IST
+      const utcDate = new Date(value + "Z");
+
+      return new Date(
+        utcDate.toLocaleString("en-US", {
+          timeZone: "Asia/Kolkata",
+        }),
+      );
+    }
+    return next();
+  },
 });
 
 module.exports = pool;
