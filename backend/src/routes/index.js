@@ -10,6 +10,7 @@ const pickupRoutes = require("../modules/pickup/pickup.routes");
 const pickupAssignmentRoutes = require("../modules/pickupAssignment/pickupAssignment.routes");
 const masterGarbageUnitRoutes = require("../modules/master/garbabageUnitData/garbabageUnitData.routes");
 const walletRoutes = require("../modules/wallets/wallet.routes");
+const notificationRoutes = require("../modules/notifications/notification.routes");
 
 const router = express.Router();
 
@@ -26,5 +27,6 @@ router.use("/pickup-requests", pickupRoutes);
 router.use("/pickup-assignments", pickupAssignmentRoutes);
 router.use("/master-garbage-unit", masterGarbageUnitRoutes);
 router.use("/wallets", walletRoutes);
+router.use("/notifications", notificationRoutes);
 
 module.exports = router;
