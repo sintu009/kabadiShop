@@ -1,0 +1,40 @@
+<!-- Open this file in browser, right-click canvas, save as icon-192.png and icon-512.png -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Icon</title>
+</head>
+<body>
+    <h2>192x192 Icon</h2>
+    <canvas id="icon192" width="192" height="192"></canvas>
+    <br>
+    <h2>512x512 Icon</h2>
+    <canvas id="icon512" width="512" height="512"></canvas>
+    
+    <script>
+        function drawIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Green gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#22c55e');
+            gradient.addColorStop(1, '#16a34a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // White "K" letter
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.6}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('K', size / 2, size / 2);
+        }
+        
+        drawIcon('icon192', 192);
+        drawIcon('icon512', 512);
+    </script>
+    <p>Right-click each canvas → Save image as → icon-192.png / icon-512.png</p>
+    <p>Save both to: frontend-ui/public/</p>
+</body>
+</html>

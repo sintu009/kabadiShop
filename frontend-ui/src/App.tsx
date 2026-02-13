@@ -1,9 +1,6 @@
-function App() {
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <p>Start prompting (or editing) to see magic happen :)</p>
-    </div>
-  );
-}
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
-export default App;
+export default function App() {
+    return <RouterProvider router={router} />;
+}
