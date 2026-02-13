@@ -1,18 +1,31 @@
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import { useState } from "react";
 
 export default function AdminLayout() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    return (
-        <div className="min-h-screen bg-gray-50">
-            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-            <Header setSidebarOpen={setSidebarOpen} />
-            <main className="lg:ml-64 mt-16 p-4 md:p-6">
-                <Outlet />
-            </main>
-        </div>
-    );
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar
+        isCollapsed={isSidebarCollapsed}
+        isMobileOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        onMobileClose={() => setIsSidebarOpen(false)}
+      />
+      <div
+        className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? "lg:ml-20" : "lg:ml-64"}`}
+      >
+        <Header
+          onMenuClick={() => setIsSidebarOpen(true)}
+          isCollapsed={isSidebarCollapsed}
+        />
+        <main className=" p-4 md:p-8">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
 }

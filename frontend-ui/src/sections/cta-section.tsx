@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function CTASection() {
     return (
         <div className='border-y border-dashed border-slate-200 w-full max-w-5xl mx-auto px-10 sm:px-16 mt-40'>

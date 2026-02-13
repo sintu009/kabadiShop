@@ -1,86 +1,121 @@
+import React from "react";
 import { useState } from 'react';
 
-const scrapData = {
+const categories = [
+  { name: "Paper", icon: "📄" },
+  { name: "Plastic", icon: "♻️" },
+  { name: "Metal", icon: "🔩" },
+  { name: "Electronics", icon: "💻" },
+  { name: "E-Waste", icon: "🗑️" },
+  { name: "Vehicle", icon: "🚗" },
+];
+
+const rates = {
   Paper: [
-    { name: 'Newspaper', rate: '₹15 /kg', icon: '📰', color: 'from-amber-400 to-orange-500' },
-    { name: 'Cardboard', rate: '₹10 /kg', icon: '📦', color: 'from-yellow-400 to-amber-500' },
-    { name: 'Books/Copies', rate: '₹12 /kg', icon: '📚', color: 'from-blue-400 to-indigo-500' },
-    { name: 'Office Paper', rate: '₹14 /kg', icon: '📄', color: 'from-gray-300 to-gray-400' }
+    { item: "Newspaper", rate: "₹15/kg", image: "📰" },
+    { item: "Cardboard", rate: "₹12/kg", image: "📦" },
+    { item: "Books", rate: "₹10/kg", image: "📚" },
+    { item: "Office Paper", rate: "₹14/kg", image: "📄" },
   ],
   Plastic: [
-    { name: 'PET Bottles', rate: '₹20 /kg', icon: '🍾', color: 'from-cyan-400 to-blue-500' },
-    { name: 'Hard Plastic', rate: '₹15 /kg', icon: '🧴', color: 'from-purple-400 to-pink-500' },
-    { name: 'Soft Plastic', rate: '₹8 /kg', icon: '🛍️', color: 'from-pink-400 to-rose-500' },
-    { name: 'Plastic Containers', rate: '₹12 /kg', icon: '🥡', color: 'from-teal-400 to-cyan-500' }
+    { item: "PET Bottles", rate: "₹20/kg", image: "🍾" },
+    { item: "Plastic Containers", rate: "₹15/kg", image: "🥤" },
+    { item: "Plastic Bags", rate: "₹8/kg", image: "🛍️" },
   ],
   Metal: [
-    { name: 'Iron', rate: '₹25 /kg', icon: '⚙️', color: 'from-gray-500 to-gray-700' },
-    { name: 'Steel', rate: '₹30 /kg', icon: '🔩', color: 'from-slate-400 to-slate-600' },
-    { name: 'Aluminum', rate: '₹80 /kg', icon: '🥫', color: 'from-blue-300 to-blue-400' },
-    { name: 'Copper', rate: '₹400 /kg', icon: '🔶', color: 'from-orange-500 to-red-600' },
-    { name: 'Brass', rate: '₹300 /kg', icon: '🔔', color: 'from-yellow-600 to-yellow-700' }
+    { item: "Iron", rate: "₹30/kg", image: "⚙️" },
+    { item: "Aluminum", rate: "₹100/kg", image: "🥫" },
+    { item: "Copper", rate: "₹400/kg", image: "🔶" },
+    { item: "Brass", rate: "₹300/kg", image: "🔸" },
   ],
   Electronics: [
-    { name: 'Mobile Phones', rate: '₹200 /piece', icon: '📱', color: 'from-indigo-500 to-purple-600' },
-    { name: 'Laptops', rate: '₹500 /piece', icon: '💻', color: 'from-gray-600 to-gray-800' },
-    { name: 'Cables/Wires', rate: '₹50 /kg', icon: '🔌', color: 'from-green-500 to-emerald-600' },
-    { name: 'Chargers', rate: '₹20 /piece', icon: '🔋', color: 'from-lime-500 to-green-600' }
+    { item: "Mobile Phones", rate: "₹200/piece", image: "📱" },
+    { item: "Laptops", rate: "₹500/piece", image: "💻" },
+    { item: "Tablets", rate: "₹300/piece", image: "📲" },
   ],
-  'E-Waste': [
-    { name: 'Computer Parts', rate: '₹30 /kg', icon: '🖥️', color: 'from-blue-600 to-indigo-700' },
-    { name: 'Keyboards', rate: '₹10 /piece', icon: '⌨️', color: 'from-slate-500 to-slate-700' },
-    { name: 'Monitors', rate: '₹100 /piece', icon: '🖨️', color: 'from-purple-500 to-purple-700' },
-    { name: 'Printers', rate: '₹50 /piece', icon: '🖨️', color: 'from-gray-500 to-gray-700' }
+  "E-Waste": [
+    { item: "Computer Parts", rate: "₹50/kg", image: "🖥️" },
+    { item: "Cables & Wires", rate: "₹30/kg", image: "🔌" },
+    { item: "Keyboards", rate: "₹20/piece", image: "⌨️" },
   ],
   Vehicle: [
-    { name: 'Car Battery', rate: '₹80 /kg', icon: '🔋', color: 'from-red-500 to-red-700' },
-    { name: 'Bike Parts', rate: '₹25 /kg', icon: '🏍️', color: 'from-orange-500 to-orange-700' },
-    { name: 'Tires', rate: '₹50 /piece', icon: '🛞', color: 'from-gray-700 to-black' },
-    { name: 'Radiators', rate: '₹150 /kg', icon: '🌡️', color: 'from-blue-500 to-blue-700' }
-  ]
+    { item: "Car Battery", rate: "₹150/piece", image: "🔋" },
+    { item: "Vehicle Parts", rate: "Contact for quote", image: "🚗" },
+    { item: "Tires", rate: "₹50/piece", image: "🛞" },
+  ],
 };
 
 export default function ScrapRatesSection() {
   const [activeTab, setActiveTab] = useState('Paper');
-  const tabs = Object.keys(scrapData);
 
   return (
-    <section id="scrap-rates" className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
+    <section id="scrap-rates" className="py-16 px-4 md:px-8 bg-white">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-4">Current Scrap Rates</h2>
-        <p className="text-gray-600 text-center mb-12">Check today's rates for different scrap materials</p>
-        
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {tabs.map(tab => (
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Scrap Rates
+          </h2>
+          <p className="text-gray-600 text-lg">
+            Get the best prices for your Scrap
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+          {categories.map((category) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-lg font-medium transition-all border-2 ${
-                activeTab === tab
-                  ? 'bg-green-600 text-white border-green-600'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-green-400'
+              key={category.name}
+              onClick={() => setActiveTab(category.name)}
+              className={`px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-all duration-300 border-2 ${
+                activeTab === category.name
+                  ? "bg-green-600 text-white border-green-600"
+                  : "bg-white text-gray-700 hover:bg-gray-100 border-gray-200"
               }`}
             >
-              {tab}
+              <span className="mr-2">{category.icon}</span>
+              {category.name}
             </button>
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {scrapData[activeTab as keyof typeof scrapData].map((item, idx) => (
-            <div key={idx} className="group relative bg-white rounded-xl border-2 border-gray-200 hover:border-green-500 transition-all duration-300 overflow-hidden">
-              <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity`}></div>
-              <div className="p-6 relative">
-                <div className={`w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br ${item.color} flex items-center justify-center text-4xl border-2 border-gray-100 transform group-hover:scale-110 transition-transform`}>
-                  {item.icon}
-                </div>
-                <h4 className="text-lg font-semibold text-gray-800 text-center mb-3">{item.name}</h4>
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-green-600">{item.rate}</span>
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
+          <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <span className="text-3xl mr-3">
+              {categories.find((c) => c.name === activeTab)?.icon}
+            </span>
+            {activeTab} Rates
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+            {rates[activeTab].map((item, index) => (
+              <div
+                key={index}
+                className="group relative bg-white rounded-xl border border-gray-200 hover:border-green-500 transition-all duration-300 overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-20 h-20 bg-green-50 rounded-bl-full opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative p-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform mx-auto mb-3">
+                    {item.image}
+                  </div>
+                  <h4 className="text-sm font-semibold text-gray-800 mb-2 text-center">
+                    {item.item}
+                  </h4>
+                  <div className="text-center">
+                    <span className="text-lg font-bold text-green-600 block">
+                      {item.rate.split("/")[0]}
+                    </span>
+                    <span className="text-gray-500 text-xs">
+                      /{item.rate.split("/")[1]}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-8 text-center">
+          <p className="text-gray-500 text-sm">
+            * Rates may vary based on quality and quantity
+          </p>
         </div>
       </div>
     </section>

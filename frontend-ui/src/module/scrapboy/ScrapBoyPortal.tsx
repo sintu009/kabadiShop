@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { Home, ShoppingBag, Wallet, User, WalletIcon, Languages, MapPin, Phone, Navigation, CheckCircle, X, Map } from "lucide-react";
 import { useNavigate } from "react-router-dom";

@@ -1,10 +1,14 @@
 import { useState } from "react";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
+import Login from "./Login";
+import Signup from "./Signup";
 import React from "react";
 
 export default function BookService() {
     const [step, setStep] = useState(1);
+    const [showLogin, setShowLogin] = useState(false);
+    const [showSignup, setShowSignup] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         mobile: "",
@@ -27,7 +31,7 @@ export default function BookService() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <Navbar onLoginClick={() => {}} />
+            <Navbar onLoginClick={() => setShowLogin(true)} />
             
             <div className="max-w-7xl mx-auto px-6 py-12 mt-8">
                 <div className="grid lg:grid-cols-2 gap-12">
@@ -179,6 +183,46 @@ export default function BookService() {
             </div>
             
             <Footer />
+
+            {showLogin && (
+                <div
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 animate-in fade-in duration-200"
+                    onClick={() => setShowLogin(false)}
+                >
+                    <div
+                        className="animate-in zoom-in-95 duration-200"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <Login
+                            onClose={() => setShowLogin(false)}
+                            onSwitchToSignup={() => {
+                                setShowLogin(false);
+                                setShowSignup(true);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {showSignup && (
+                <div
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 animate-in fade-in duration-200"
+                    onClick={() => setShowSignup(false)}
+                >
+                    <div
+                        className="animate-in zoom-in-95 duration-200"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <Signup
+                            onClose={() => setShowSignup(false)}
+                            onSwitchToLogin={() => {
+                                setShowSignup(false);
+                                setShowLogin(true);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

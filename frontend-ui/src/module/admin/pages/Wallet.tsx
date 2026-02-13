@@ -1,75 +1,158 @@
-import { Wallet as WalletIcon, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownLeft } from "lucide-react";
+import React, { useState } from "react";
 
-export default function Wallet() {
-    const transactions = [
-        { id: 1, type: "credit", amount: 5000, description: "Payment from Order #1001", date: "2024-01-15", status: "Completed" },
-        { id: 2, type: "debit", amount: 2000, description: "Withdrawal to Bank", date: "2024-01-14", status: "Completed" },
-        { id: 3, type: "credit", amount: 3500, description: "Payment from Order #1002", date: "2024-01-13", status: "Completed" },
-        { id: 4, type: "debit", amount: 1500, description: "Scrap Boy Payment", date: "2024-01-12", status: "Pending" },
-    ];
+import { HiSearch, HiPlus, HiX } from "react-icons/hi";
 
-    return (
-        <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Wallet</h1>
+function Wallet() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showAddMoneyModal, setShowAddMoneyModal] = useState(false);
+  const [selectedBoy, setSelectedBoy] = useState(null);
+  const [amount, setAmount] = useState("");
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow p-6 text-white">
-                    <div className="flex items-center gap-3 mb-4">
-                        <WalletIcon size={24} />
-                        <h3 className="text-lg font-medium">Total Balance</h3>
-                    </div>
-                    <p className="text-4xl font-bold">₹45,678</p>
-                </div>
+  const scrapBoys = [
+    { id: 1, name: "Ramesh Kumar", phone: "+91 9876543210", balance: 5000 },
+    { id: 2, name: "Suresh Patel", phone: "+91 9876543211", balance: 3200 },
+    { id: 3, name: "Mahesh Singh", phone: "+91 9876543212", balance: 1500 },
+    { id: 4, name: "Dinesh Sharma", phone: "+91 9876543213", balance: 7800 },
+  ];
 
-                <div className="bg-white rounded-lg shadow p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="p-2 bg-green-100 rounded-lg">
-                            <TrendingUp size={24} className="text-green-600" />
-                        </div>
-                        <h3 className="text-lg font-medium text-gray-900">Total Credit</h3>
-                    </div>
-                    <p className="text-3xl font-bold text-gray-900">₹58,500</p>
-                </div>
+  const filteredBoys = scrapBoys.filter(
+    (boy) =>
+      boy.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      boy.phone.includes(searchQuery),
+  );
 
-                <div className="bg-white rounded-lg shadow p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="p-2 bg-red-100 rounded-lg">
-                            <TrendingDown size={24} className="text-red-600" />
-                        </div>
-                        <h3 className="text-lg font-medium text-gray-900">Total Debit</h3>
-                    </div>
-                    <p className="text-3xl font-bold text-gray-900">₹12,822</p>
-                </div>
-            </div>
+  const handleAddMoney = (e) => {
+    e.preventDefault();
+    console.log(`Adding ₹${amount} to ${selectedBoy.name}'s account`);
+    setShowAddMoneyModal(false);
+    setSelectedBoy(null);
+    setAmount("");
+  };
 
-            <div className="bg-white rounded-lg shadow">
-                <div className="p-6 border-b border-gray-200">
-                    <h2 className="text-xl font-bold text-gray-900">Recent Transactions</h2>
-                </div>
-                <div className="divide-y divide-gray-200">
-                    {transactions.map((txn) => (
-                        <div key={txn.id} className="p-6 flex items-center justify-between hover:bg-gray-50">
-                            <div className="flex items-center gap-4">
-                                <div className={`p-3 rounded-full ${txn.type === 'credit' ? 'bg-green-100' : 'bg-red-100'}`}>
-                                    {txn.type === 'credit' ? <ArrowDownLeft className="text-green-600" size={20} /> : <ArrowUpRight className="text-red-600" size={20} />}
-                                </div>
-                                <div>
-                                    <p className="font-medium text-gray-900">{txn.description}</p>
-                                    <p className="text-sm text-gray-500">{txn.date}</p>
-                                </div>
-                            </div>
-                            <div className="text-right">
-                                <p className={`text-lg font-bold ${txn.type === 'credit' ? 'text-green-600' : 'text-red-600'}`}>
-                                    {txn.type === 'credit' ? '+' : '-'}₹{txn.amount}
-                                </p>
-                                <span className={`text-xs px-2 py-1 rounded-full ${txn.status === 'Completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                                    {txn.status}
-                                </span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
+  const openAddMoneyModal = (boy) => {
+    setSelectedBoy(boy);
+    setShowAddMoneyModal(true);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-800">Wallet Management</h1>
+        <p className="text-gray-600 mt-1">Manage scrap boy wallet balances</p>
+      </div>
+
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search scrap boys..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 pl-10 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-200"
+            />
+            <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          </div>
         </div>
-    );
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">
+                  Name
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">
+                  Phone
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">
+                  Balance
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {filteredBoys.map((boy) => (
+                <tr key={boy.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 text-sm font-medium text-gray-800">
+                    {boy.name}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {boy.phone}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-semibold text-green-600">
+                    ₹{boy.balance}
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => openAddMoneyModal(boy)}
+                      className="flex items-center gap-1 px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+                    >
+                      <HiPlus /> Add Money
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Add Money Modal */}
+      {showAddMoneyModal && selectedBoy && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Add Money to Wallet</h2>
+              <button onClick={() => setShowAddMoneyModal(false)}>
+                <HiX className="text-2xl" />
+              </button>
+            </div>
+            <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Scrap Boy</p>
+              <p className="font-semibold text-lg">{selectedBoy.name}</p>
+              <p className="text-sm text-gray-600 mt-2">Current Balance</p>
+              <p className="font-semibold text-green-600 text-xl">
+                ₹{selectedBoy.balance}
+              </p>
+            </div>
+            <form onSubmit={handleAddMoney} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Amount (₹)
+                </label>
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  placeholder="Enter amount"
+                  min="1"
+                  required
+                />
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                >
+                  Add Money
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAddMoneyModal(false)}
+                  className="flex-1 px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
+
+export default Wallet;

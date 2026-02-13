@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function SectionTitle({ badge, icon, title, description }: { badge: string, icon: React.ReactNode, title: string, description: string }) {
     return (
         <div className="flex flex-col items-center justify-center">

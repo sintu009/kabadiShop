@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function TeamSection() {
     return (
         <div className='px-4 mt-20 mb-40'>

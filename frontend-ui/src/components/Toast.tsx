@@ -1,3 +1,4 @@
+import React from "react";
 import { CheckCircle, XCircle, AlertCircle, X } from "lucide-react";
 import { useEffect } from "react";
 

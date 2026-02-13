@@ -1,6 +1,6 @@
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import InstallPWA from "../../components/InstallPWA";
 
 export default function ScrapBoyLogin() {
     const [phone, setPhone] = useState("");
@@ -15,7 +15,6 @@ export default function ScrapBoyLogin() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-600 to-green-500 flex items-center justify-center p-4">
-            <InstallPWA />
             <div className="bg-white rounded-2xl p-8 w-full max-w-md shadow-xl">
                 <div className="text-center mb-8">
                     <div className="size-16 rounded-full bg-gradient-to-br from-green-600 to-green-500 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">

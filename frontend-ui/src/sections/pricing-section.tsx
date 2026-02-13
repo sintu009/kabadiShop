@@ -1,3 +1,4 @@
+import React from "react";
 import SectionTitle from "../components/section-title";
 import { CircleCheckIcon, CircleDollarSignIcon } from "lucide-react";
 import { useState } from "react";
