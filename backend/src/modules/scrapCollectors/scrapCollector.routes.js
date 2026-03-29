@@ -204,4 +204,38 @@ router.put("/:id", auth, role("ADMIN"), ScrapCollectors.update);
  */
 router.delete("/:id", auth, role("ADMIN"), ScrapCollectors.softDelete);
 
+/**
+ * @swagger
+ * /collector/dashboard:
+ *   get:
+ *     summary: Scrap Collector dashboard summary
+ *     tags: [Collector]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Collector dashboard summary
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     total_assigned_requests:
+ *                       type: integer
+ *                     pending_requests:
+ *                       type: integer
+ *                     in_progress_requests:
+ *                       type: integer
+ *                     completed_requests:
+ *                       type: integer
+ *                     rejected_requests:
+ *                       type: integer
+ */
+router.get("/dashboard", auth, role("COLLECTOR"), ScrapCollectors.dashboard);
+
 module.exports = router;

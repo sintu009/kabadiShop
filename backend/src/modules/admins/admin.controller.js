@@ -17,6 +17,15 @@ class AdminController {
       });
     }
   }
+
+  static async dashboard(req, res) {
+    const data = await AdminService.dashboardSummary();
+
+    res.json({
+      success: true,
+      data,
+    });
+  }
 }
 
 module.exports = AdminController;

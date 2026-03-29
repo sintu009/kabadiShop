@@ -26,8 +26,11 @@ const GarbagePricingController = require("./garbagePricing.controller");
  *         application/json:
  *           schema:
  *             type: object
- *             required: [garbage_type_id, unit, price_per_unit]
+ *             required: [name, garbage_type_id, unit, price_per_unit]
  *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Plastic
  *               garbage_type_id:
  *                 type: integer
  *                 example: 1
@@ -164,8 +167,11 @@ router.get("/:id", auth, role("ADMIN"), GarbagePricingController.getById);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [unit, price_per_unit]
+ *             required: [name, unit, price_per_unit]
  *             properties:
+ *               name:
+ *                type: string
+ *                example: Plastic
  *               unit:
  *                 type: string
  *                 enum: [KG, PIECE]

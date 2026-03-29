@@ -48,7 +48,7 @@ class GarbagePriceController {
     if (id == -1) {
       return res.status(200).json({
         success: false,
-        message: "Garbage price not exists",
+        message: "Garbage price already exists",
         id,
       });
     } else {

@@ -20,10 +20,16 @@ class AdminService {
         data.panNumber,
         createdBy,
       ],
-      ["o_admin_id"]
+      ["o_admin_id"],
     );
 
     return out.o_admin_id;
+  }
+
+  static async dashboardSummary() {
+    const result = await SqlHelper.callSP("sp_admin_dashboard_summary", []);
+
+    return result?.[0]?.[0];
   }
 }
 

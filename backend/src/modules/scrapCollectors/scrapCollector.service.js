@@ -49,6 +49,14 @@ class ScrapCollectorService {
     console.log("Called Service");
     return SqlHelper.getAll("sp_scrap_collector_dropdown", []);
   }
+
+  static async dashboardSummary(scrapCollectorId) {
+    const result = await SqlHelper.callSP("sp_collector_dashboard_summary", [
+      scrapCollectorId,
+    ]);
+
+    return result?.[0]?.[0];
+  }
 }
 
 module.exports = ScrapCollectorService;

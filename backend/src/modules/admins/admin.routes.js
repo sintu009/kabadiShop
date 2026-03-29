@@ -65,4 +65,40 @@ const AdminController = require("./admin.controller");
 
 router.post("/create", AdminController.createAdmin);
 
+/**
+ * @swagger
+ * /admin/dashboard:
+ *   get:
+ *     summary: Admin dashboard summary
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dashboard summary
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     total_pickup_requests:
+ *                       type: integer
+ *                     pending_pickups:
+ *                       type: integer
+ *                     completed_pickups:
+ *                       type: integer
+ *                     cancelled_pickups:
+ *                       type: integer
+ *                     total_scrap_collectors:
+ *                       type: integer
+ *                     total_users:
+ *                       type: integer
+ */
+router.get("/dashboard", AdminController.dashboard);
+
 module.exports = router;

@@ -7,6 +7,7 @@ class GarbagePriceService {
       data.unit,
       data.price_per_unit,
       createdBy,
+      data.name,
     ]);
 
     return result[0][0].garbage_price_id;
@@ -23,6 +24,7 @@ class GarbagePriceService {
   static async update(id, data, modifiedBy) {
     const result = await SqlHelper.callSP("sp_garbage_price_update", [
       id,
+      data.name,
       data.unit,
       data.price_per_unit,
       modifiedBy,

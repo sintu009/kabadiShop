@@ -55,6 +55,17 @@ class ScrapCollectorController {
       data,
     });
   }
+
+  static async dashboard(req, res) {
+    const scrapCollectorId = req.user.scrap_collector_id;
+
+    const data = await ScrapCollectorService.dashboardSummary(scrapCollectorId);
+
+    res.json({
+      success: true,
+      data,
+    });
+  }
 }
 
 module.exports = ScrapCollectorController;
