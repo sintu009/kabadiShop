@@ -94,11 +94,60 @@ router.post("/create", AdminController.createAdmin);
  *                       type: integer
  *                     cancelled_pickups:
  *                       type: integer
+ *                     total_revenue:
+ *                       type: integer
  *                     total_scrap_collectors:
  *                       type: integer
  *                     total_users:
  *                       type: integer
  */
 router.get("/dashboard", AdminController.dashboard);
+
+/**
+ * @swagger
+ * /admin/dashboard/order-summary/datewise:
+ *   post:
+ *     summary: Admin dashboard summary datewise
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - date
+ *             properties:
+ *               date:
+ *                 type: string
+ *                 example: 2026-04-01
+ *     responses:
+ *       200:
+ *         description: Dashboard summary
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     total_pickup_requests:
+ *                       type: integer
+ *                     pending_pickups:
+ *                       type: integer
+ *                     completed_pickups:
+ *                       type: integer
+ *                     cancelled_pickups:
+ *                       type: integer
+ */
+router.post(
+  "/dashboard/order-summary/datewise",
+  AdminController.dashboardDatewise,
+);
 
 module.exports = router;

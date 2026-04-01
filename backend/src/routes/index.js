@@ -11,6 +11,7 @@ const pickupAssignmentRoutes = require("../modules/pickupAssignment/pickupAssign
 const masterGarbageUnitRoutes = require("../modules/master/garbabageUnitData/garbabageUnitData.routes");
 const walletRoutes = require("../modules/wallets/wallet.routes");
 const notificationRoutes = require("../modules/notifications/notification.routes");
+const slotTimeRoutes = require("../modules/slotTimes/slotTime.routes");
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use("/pickup-assignments", pickupAssignmentRoutes);
 router.use("/master-garbage-unit", masterGarbageUnitRoutes);
 router.use("/wallets", walletRoutes);
 router.use("/notifications", notificationRoutes);
+router.use("/slot-times", slotTimeRoutes);
 
 module.exports = router;

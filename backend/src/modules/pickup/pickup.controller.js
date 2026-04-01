@@ -33,7 +33,8 @@ class PickupController {
   }
 
   static async updateStatus(req, res) {
-    const { status, image } = req.body;
+    const { status, actual_weight, final_price } = req.body;
+    const image = req.file; // multer puts the uploaded file info here
     const { pickupRequestId } = req.params;
     const scrapCollectorId = req.user.user_id;
     const username = req.user.username;
@@ -45,6 +46,8 @@ class PickupController {
         scrapCollectorId,
         pickupRequestId,
         image || null,
+        actual_weight,
+        final_price,
         username,
       );
 
@@ -68,11 +71,13 @@ class PickupController {
   }
 
   static async guestPickup(req, res) {
+    console.log("Received guest pickup request:", req.body);
     const {
       name,
       phone,
       garbage_type_id,
       estimated_weight,
+      garbage_price_id,
       unit,
       price_at_request,
       total_amount,
@@ -80,6 +85,8 @@ class PickupController {
       latitude,
       longitude,
       image,
+      slot_id,
+      request_date,
     } = req.body;
 
     // 1️⃣ Create / reuse guest user
@@ -98,6 +105,8 @@ class PickupController {
         latitude,
         longitude,
         image,
+        slot_id,
+        request_date,
       },
       userId,
     );

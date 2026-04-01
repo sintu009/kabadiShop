@@ -2,6 +2,7 @@ const SqlHelper = require("../../config/sqlHelper");
 
 class PickupService {
   static async create(data, createdBy) {
+    console.log(data);
     const result = await SqlHelper.callSP("sp_pickup_request_create", [
       data.user_id,
       data.garbage_type_id,
@@ -13,6 +14,8 @@ class PickupService {
       data.latitude || null,
       data.longitude || null,
       data.image || null,
+      data.slot_id || null,
+      data.request_date,
       createdBy,
     ]);
 
@@ -38,10 +41,19 @@ class PickupService {
     ]);
   }
 
-  static async completePickup(scrapCollectorId, pickupRequestId, image, user) {
+  static async completePickup(
+    scrapCollectorId,
+    pickupRequestId,
+    image,
+    actual_weight,
+    final_price,
+    user,
+  ) {
     await SqlHelper.execute("sp_pickup_complete_and_wallet_debit", [
       pickupRequestId,
       scrapCollectorId,
+      actual_weight,
+      final_price,
       image,
       user,
     ]);
@@ -57,6 +69,7 @@ class PickupService {
   }
 
   static async createPickup(data, userId) {
+    console.log("Creating pickup for guest user:", data);
     const result = await SqlHelper.callSP("sp_pickup_request_create", [
       userId,
       data.garbage_type_id,
@@ -68,6 +81,8 @@ class PickupService {
       data.latitude || null,
       data.longitude || null,
       data.image || null,
+      data.slot_id || null,
+      data.request_date || null,
       "GUEST",
     ]);
 

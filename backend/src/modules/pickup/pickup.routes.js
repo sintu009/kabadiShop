@@ -3,6 +3,8 @@ const router = express.Router();
 
 const auth = require("../../middlewares/auth.middleware");
 const role = require("../../middlewares/role.middleware");
+const upload = require("../../middlewares/upload.middleware");
+
 const PickupController = require("./pickup.controller");
 
 /**
@@ -30,6 +32,8 @@ const PickupController = require("./pickup.controller");
  *               - unit
  *               - price_at_request
  *               - total_amount
+ *               - request_date
+ *               - slot_id
  *             properties:
  *               user_id:
  *                 type: integer
@@ -61,6 +65,13 @@ const PickupController = require("./pickup.controller");
  *               image:
  *                 type: string
  *                 example: image.jpg
+ *               slot_id:
+ *                 type: number
+ *                 example: 1
+ *               request_date:
+ *                 type: string
+ *                 format: date
+ *                 example: "2024-07-01"
  *     responses:
  *       201:
  *         description: Pickup request created
@@ -172,26 +183,40 @@ router.get("/pickups", auth, role("COLLECTOR"), PickupController.getAssigned);
  *       - in: path
  *         name: pickupRequestId
  *         required: true
+ *         description: ID of the pickup request
  *         schema:
  *           type: integer
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
- *             required: [status]
+ *             required:
+ *               - status
  *             properties:
  *               status:
  *                 type: string
+ *                 description: Status of the pickup
  *                 enum:
- *                   - ACCEPTED
- *                   - INPROGRESS
+ *                   - IN_PROGRESS
  *                   - COMPLETED
- *                   - REJECTED
+ *                   - CANCELLED
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *                 description: Optional image for proof
+ *               actual_weight:
+ *                 type: number
+ *                 description: Actual weight of the pickup (optional)
+ *                 example: 2
+ *               final_price:
+ *                 type: number
+ *                 description: Final price for the pickup (optional)
+ *                 example: 30
  *     responses:
  *       200:
- *         description: Status updated
+ *         description: Status updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -199,13 +224,16 @@ router.get("/pickups", auth, role("COLLECTOR"), PickupController.getAssigned);
  *               properties:
  *                 success:
  *                   type: boolean
+ *                   example: true
  *                 message:
  *                   type: string
+ *                   example: Status updated successfully
  */
 router.put(
   "/pickups/:pickupRequestId/status",
   auth,
   role("COLLECTOR"),
+  upload.single("image"),
   PickupController.updateStatus,
 );
 
@@ -228,6 +256,7 @@ router.put(
  *               - unit
  *               - price_at_request
  *               - total_amount
+ *               - request_date
  *             properties:
  *               name:
  *                 type: string
@@ -259,6 +288,13 @@ router.put(
  *                 type: number
  *               image:
  *                 type: string
+ *               slot_id:
+ *                 type: number
+ *                 example: 1
+ *               request_date:
+ *                 type: string
+ *                 format: date
+ *                 example: "2024-07-01"
  *     responses:
  *       201:
  *         description: Pickup created

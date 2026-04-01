@@ -31,6 +31,15 @@ class AdminService {
 
     return result?.[0]?.[0];
   }
+
+  static async dashboardOrderSummaryDatewise(data) {
+    const result = await SqlHelper.callSP(
+      "sp_admin_dashboard_order_summary_datewise",
+      [data.date],
+    );
+
+    return result?.[0]?.[0];
+  }
 }
 
 module.exports = AdminService;

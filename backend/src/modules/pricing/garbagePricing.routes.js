@@ -35,8 +35,8 @@ const GarbagePricingController = require("./garbagePricing.controller");
  *                 type: integer
  *                 example: 1
  *               unit:
- *                 type: string
- *                 enum: [KG, PIECE]
+ *                 type: integer
+ *                 example: 1
  *               price_per_unit:
  *                 type: number
  *                 example: 12.5
@@ -173,10 +173,12 @@ router.get("/:id", auth, role("ADMIN"), GarbagePricingController.getById);
  *                type: string
  *                example: Plastic
  *               unit:
- *                 type: string
- *                 enum: [KG, PIECE]
+ *                 type: integer
+ *                 example: 1
  *               price_per_unit:
  *                 type: number
+ *                 example: 15
+
  *     responses:
  *       200:
  *         description: Updated successfully

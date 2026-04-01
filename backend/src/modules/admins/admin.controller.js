@@ -26,6 +26,15 @@ class AdminController {
       data,
     });
   }
+
+  static async dashboardDatewise(req, res) {
+    console.log(req);
+    const data = await AdminService.dashboardOrderSummaryDatewise(req.body);
+    res.json({
+      success: true,
+      data,
+    });
+  }
 }
 
 module.exports = AdminController;
