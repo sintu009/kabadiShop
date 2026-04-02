@@ -117,6 +117,33 @@ class PickupController {
       pickup_request_id: pickupId,
     });
   }
+
+  // For guest users to check their pickup status using phone number
+  static async guestStatus(req, res) {
+    console.log(req.body);
+    const { phone, page_number = 1, page_size = 10 } = req.body;
+
+    if (!phone) {
+      return res.status(400).json({
+        success: false,
+        message: "Phone number is required",
+      });
+    }
+
+    const result = await PickupService.getGuestPickupStatus({
+      phone,
+      page_number,
+      page_size,
+    });
+
+    res.json({
+      success: true,
+      total_count: result.total_count,
+      page_number,
+      page_size,
+      data: result.data,
+    });
+  }
 }
 
 module.exports = PickupController;

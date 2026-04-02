@@ -88,6 +88,27 @@ class PickupService {
 
     return result[0][0].pickup_request_id;
   }
+
+  // For guest users to check their pickup status using phone number
+  static async getGuestPickupStatus(data) {
+    const result = await SqlHelper.callSP("sp_guest_pickup_status_by_phone", [
+      data.phone,
+      data.page_number,
+      data.page_size,
+    ]);
+    console.log("Guest pickup status result:", result);
+    console.log(
+      "Guest pickup status result:",
+      data.phone,
+      data.page_number,
+      data.page_size,
+    );
+
+    return {
+      total_count: result?.[0]?.[0]?.total_count || 0,
+      data: result?.[1] || [],
+    };
+  }
 }
 
 module.exports = PickupService;

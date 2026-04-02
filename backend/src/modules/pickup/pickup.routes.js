@@ -313,4 +313,70 @@ router.put(
  */
 router.post("/guest", PickupController.guestPickup);
 
+/**
+ * @swagger
+ * /pickup-requests/guest/status:
+ *   post:
+ *     summary: Get pickup status by phone (Guest)
+ *     tags: [PickupRequests]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [phone]
+ *             properties:
+ *               phone:
+ *                 type: string
+ *                 example: "9876543210"
+ *               page_number:
+ *                 type: integer
+ *                 example: 1
+ *                 default: 1
+ *               page_size:
+ *                 type: integer
+ *                 example: 10
+ *                 default: 10
+ *     responses:
+ *       200:
+ *         description: Pickup status list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 total_count:
+ *                   type: integer
+ *                 page_number:
+ *                   type: integer
+ *                 page_size:
+ *                   type: integer
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       pickup_request_id:
+ *                         type: integer
+ *                       status:
+ *                         type: string
+ *                       address:
+ *                         type: string
+ *                       created_on:
+ *                         type: string
+ *                         format: date-time
+ *                       estimated_weight:
+ *                         type: number
+ *                       actual_weight:
+ *                         type: number
+ *                       total_amount:
+ *                         type: number
+ *                       final_amount:
+ *                         type: number
+ */
+router.post("/guest/status", PickupController.guestStatus);
+
 module.exports = router;
